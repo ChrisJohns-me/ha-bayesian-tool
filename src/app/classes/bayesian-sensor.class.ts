@@ -5,18 +5,24 @@ export enum ObservationPlatform {
 }
 
 export class BayesianSensor {
-  public platform: 'bayesian' = 'bayesian';
-  public prior: number = 0;
-  public name?: string;
-  public probability_threshold?: number;
-  public observations: Array<{
-    platform: ObservationPlatform;
-    entity_id?: string;
-    prob_given_true: number;
-    prob_given_false?: number;
-    to_state?: string;
-  }> = [{
-    platform: ObservationPlatform.state,
-    prob_given_true: 1,
-  }];
+  public binary_sensor: {
+    platform: 'bayesian',
+    prior: number,
+    name?: string,
+    probability_threshold?: number,
+    observations: Array<{
+      platform: ObservationPlatform;
+      entity_id?: string;
+      prob_given_true: number;
+      prob_given_false?: number;
+      to_state?: string;
+    }>,
+  } = {
+    platform: 'bayesian',
+    prior: 0,
+    observations: [{
+      platform: ObservationPlatform.state,
+      prob_given_true: 1,
+    }],
+  };
 }
