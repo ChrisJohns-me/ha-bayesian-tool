@@ -1,11 +1,23 @@
-<div *ngIf="hasImportError">
-  <span>{{ importError }}</span>
-</div>
+<section>
+  <div *ngFor="let observation of bayesianSensor?.binary_sensor?.observations">
+    {{ observation.entity_id }}
+  </div>
 
-<button (click)="showImport = !showImport">
-  {{ showImport ? 'Hide Import' : 'Import YAML' }}
-</button>
-<ng-container *ngIf="showImport">
-  <button (click)="importInput()">Import</button><br />
-  <textarea class="main-input" [(ngModel)]="textInput"></textarea>
-</ng-container>
+  <div>
+    <h4>Result</h4>
+  </div>
+</section>
+
+<section>
+  <div *ngIf="hasImportError">
+    <span>{{ importError }}</span>
+  </div>
+
+  <button (click)="showCode = !showCode">
+    {{ showCode ? 'Hide Code' : 'Show Code' }}
+  </button>
+  <ng-container *ngIf="showCode">
+    <button (click)="importInput()">Import from code</button><br />
+    <textarea class="main-input" [(ngModel)]="textInput"></textarea>
+  </ng-container>
+</section>

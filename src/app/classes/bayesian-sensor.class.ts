@@ -15,7 +15,10 @@ export class BayesianSensor {
       entity_id?: string;
       prob_given_true: number;
       prob_given_false?: number;
-      to_state?: string;
+      to_state?: string; // platform=state
+      below?: number; // platform=numeric_state
+      above?: number; // platform=numeric_state
+      value_template?: string; // platform=template
     }>,
   } = {
     platform: 'bayesian',

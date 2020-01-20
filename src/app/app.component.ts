@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ExampleYAML } from './constants/example-yaml';
 import YAML from 'yaml';
 import { BayesianSensor } from './classes/bayesian-sensor.class';
+import { IObserverMeta } from './interfaces/observer-meta.interface'
 
 @Component({
   selector: 'my-app',
@@ -11,11 +12,14 @@ import { BayesianSensor } from './classes/bayesian-sensor.class';
 export class AppComponent {
   public hasImportError: boolean = false;
   public importError: string = '';
-  public showImport: boolean = false;
+  public showCode: boolean = false;
   public textInput: string = ExampleYAML;
   public bayesianSensor: BayesianSensor;
+  public observerMetas: IObserverMeta[] = [];
 
-  constructor() { }
+  constructor() {
+    this.importInput(); // Display example from YAML
+  }
 
   public importInput(): void {
     let parsedInput: any;
