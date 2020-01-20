@@ -1,11 +1,16 @@
 <section>
+  <div>Sensor name: {{ bayesianSensor?.binary_sensor?.name }}</div>
+  <div>Prior: {{ bayesianSensor?.binary_sensor?.prior }}</div>
+  <div>Probability threshold: {{ bayesianSensor?.binary_sensor?.probability_threshold }}</div>
+
+  <br />
+  Observations:
   <div *ngFor="let observation of bayesianSensor?.binary_sensor?.observations">
     {{ observation.entity_id }}
   </div>
 
-  <div>
-    <h4>Result</h4>
-  </div>
+  <br />
+  <div>Result: {{ '' }}</div>
 </section>
 
 <section>

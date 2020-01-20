@@ -28,9 +28,27 @@ export class AppComponent {
     try {
       parsedInput = YAML.parse(this.textInput);
       this.bayesianSensor = new BayesianSensor(parsedInput);
+
+      this.updateBayesianSensor();
     } catch(error) {
       this.hasImportError = true;
       this.importError = error;
     }
+  }
+
+  private updateBayesianSensor(): void {
+    if (!this.bayesianSensor || this.bayesianSensor.binary_sensor) return;
+    let prior = this.bayesianSensor.binary_sensor.prior;
+    for (let obs of this.bayesianSensor.binary_sensor.observations)
+      prior = this.updateProbability(prior, obs.prob_given_true, obs.prob_given_false);
+
+    this.bayesianSensor.binary_sensor.prior = prior;
+  }
+
+  private updateProbability(prior: number, prob_true: number, prob_false: number): number {
+    const numerator = prob_true * prior
+    const denominator = numerator + prob_false * (1 - prior)
+    const probability = numerator / denominator
+    return probability;
   }
 }

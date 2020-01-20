@@ -20,13 +20,6 @@ export class BayesianSensor {
       above?: number; // platform=numeric_state
       value_template?: string; // platform=template
     }>,
-  } = {
-    platform: 'bayesian',
-    prior: 0,
-    observations: [{
-      platform: ObservationPlatform.state,
-      prob_given_true: 1,
-    }]
   };
 
   constructor(private inputObj: any) {
