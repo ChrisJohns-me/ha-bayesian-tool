@@ -1,6 +1,11 @@
-Input:<br />
-<textarea class="main-input" [(ngModel)]="textInput"></textarea>
+<div *ngIf="hasImportError">
+  <span>{{ importError }}</span>
+</div>
 
-<br /><br />
-Output:<br />
-<textarea class="main-input" [(ngModel)]="textOutput" readonly="readonly"></textarea>
+<button (click)="showImport = !showImport">
+  {{ showImport ? 'Hide Import' : 'Import YAML' }}
+</button>
+<ng-container *ngIf="showImport">
+  <button (click)="importInput()">Import</button><br />
+  <textarea class="main-input" [(ngModel)]="textInput"></textarea>
+</ng-container>

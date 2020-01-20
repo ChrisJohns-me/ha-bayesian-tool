@@ -23,6 +23,15 @@ export class BayesianSensor {
     observations: [{
       platform: ObservationPlatform.state,
       prob_given_true: 1,
-    }],
+    }]
   };
+
+  constructor(private inputObj: any) {
+    if (this.isBinarySensorObj(inputObj)) this.binary_sensor = inputObj.binary_sensor;
+    else this.binary_sensor = inputObj;
+  }
+
+  private isBinarySensorObj(obj: any): boolean {
+    return !!obj && !!obj.binary_sensor && typeof(obj.binary_sensor) === 'object';
+  }
 }
