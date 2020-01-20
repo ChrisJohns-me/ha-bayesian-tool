@@ -1,16 +1,30 @@
 <section>
+  <div><strong>Binary Sensor</strong></div>
   <div>Sensor name: {{ bayesianSensor?.binary_sensor?.name }}</div>
   <div>Prior: {{ bayesianSensor?.binary_sensor?.prior }}</div>
   <div>Probability threshold: {{ bayesianSensor?.binary_sensor?.probability_threshold }}</div>
 
   <br />
-  Observations:
-  <div *ngFor="let observation of bayesianSensor?.binary_sensor?.observations">
-    {{ observation.entity_id }}
-  </div>
+  <div><strong>Simulated Results</strong></div>
+  <div>Probability: {{ calculatedProbability }}</div>
+  <div>Result: {{ calculatedResult ? 'On' : 'Off' }}</div>
 
   <br />
-  <div>Result: {{ '' }}</div>
+  <div><strong>Observations</strong></div>
+  <table class="observation-table">
+    <thead>
+      <td><strong>Entity Identifiers</strong></td>
+      <td><strong>Prob Given True</strong></td>
+      <td><strong>Prob Given False</strong></td>
+    </thead>
+    <tbody>
+      <tr *ngFor="let obs of bayesianSensor?.binary_sensor?.observations">
+        <td>{{ obs.entity_id }}</td>
+        <td>{{ obs.prob_given_true }}</td>
+        <td>{{ (obs.prob_given_false ? obs.prob_given_false : 1 - obs.prob_given_true) | number:'0.1-2' }}</td>
+      </tr>
+    </tbody>
+  </table>
 </section>
 
 <section>

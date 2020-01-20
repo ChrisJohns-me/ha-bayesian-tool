@@ -16,6 +16,8 @@ export class AppComponent {
   public textInput: string = ExampleYAML;
   public bayesianSensor: BayesianSensor;
   public observerMetas: IObserverMeta[] = [];
+  public calculatedProbability: number = 0;
+  public calculatedResult: boolean = false;
 
   constructor() {
     this.importInput(); // Display example from YAML
@@ -42,7 +44,8 @@ export class AppComponent {
     for (let obs of this.bayesianSensor.binary_sensor.observations)
       prior = this.updateProbability(prior, obs.prob_given_true, obs.prob_given_false);
 
-    this.bayesianSensor.binary_sensor.prior = prior;
+    // this.bayesianSensor.binary_sensor.prior = prior;
+    this.calculatedProbability = prior;
   }
 
   private updateProbability(prior: number, prob_true: number, prob_false: number): number {
