@@ -21,6 +21,7 @@ export class AppComponent {
 
   constructor() {
     this.importInput(); // Display example from YAML
+    this.updateCode();
   }
 
   public importInput(): void {
@@ -29,7 +30,7 @@ export class AppComponent {
 
     try {
       parsedInput = YAML.parse(this.textInput);
-      this.bayesianSensor = new BayesianSensor(parsedInput);
+      this.bayesianSensor = new BayesianSensor(parsedInput.binary_sensor);
 
       this.updateBayesianSensor();
     } catch(error) {
@@ -38,13 +39,16 @@ export class AppComponent {
     }
   }
 
+  public updateCode(): void {
+    this.textInput = YAML.stringify({ binary_sensor: this.bayesianSensor });
+  }
+
   private updateBayesianSensor(): void {
-    if (!this.bayesianSensor || this.bayesianSensor.binary_sensor) return;
-    let prior = this.bayesianSensor.binary_sensor.prior;
-    for (let obs of this.bayesianSensor.binary_sensor.observations)
+    if (!this.bayesianSensor) return;
+    let prior = this.bayesianSensor.prior;
+    for (let obs of this.bayesianSensor.observations)
       prior = this.updateProbability(prior, obs.prob_given_true, obs.prob_given_false);
 
-    // this.bayesianSensor.binary_sensor.prior = prior;
     this.calculatedProbability = prior;
   }
 

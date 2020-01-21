@@ -1,8 +1,11 @@
 <section>
   <div><strong>Binary Sensor</strong></div>
-  <div>Sensor name: {{ bayesianSensor?.binary_sensor?.name }}</div>
-  <div>Prior: {{ bayesianSensor?.binary_sensor?.prior }}</div>
-  <div>Probability threshold: {{ bayesianSensor?.binary_sensor?.probability_threshold }}</div>
+  <div>
+    Sensor name:
+    <input [(ngModel)]="bayesianSensor.name" (keyup)="updateCode()" />
+  </div>
+  <div>Prior: {{ bayesianSensor?.prior }}</div>
+  <div>Probability threshold: {{ bayesianSensor?.probability_threshold }}</div>
 
   <br />
   <div><strong>Simulated Results</strong></div>
@@ -18,7 +21,7 @@
       <td><strong>Prob Given False</strong></td>
     </thead>
     <tbody>
-      <tr *ngFor="let obs of bayesianSensor?.binary_sensor?.observations">
+      <tr *ngFor="let obs of bayesianSensor?.observations">
         <td>{{ obs.entity_id }}</td>
         <td>{{ obs.prob_given_true }}</td>
         <td>{{ (obs.prob_given_false ? obs.prob_given_false : 1 - obs.prob_given_true) | number:'0.1-2' }}</td>

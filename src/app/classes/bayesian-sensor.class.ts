@@ -5,29 +5,27 @@ export enum ObservationPlatform {
 }
 
 export class BayesianSensor {
-  public binary_sensor: {
-    platform: 'bayesian',
-    prior: number,
-    name?: string,
-    probability_threshold?: number,
-    observations: Array<{
-      platform: ObservationPlatform;
-      entity_id?: string;
-      prob_given_true: number;
-      prob_given_false?: number;
-      to_state?: string; // platform=state
-      below?: number; // platform=numeric_state
-      above?: number; // platform=numeric_state
-      value_template?: string; // platform=template
-    }>,
-  };
+  public platform: 'bayesian';
+  public prior: number;
+  public name?: string;
+  public probability_threshold?: number;
+  public observations: Array<{
+    platform: ObservationPlatform;
+    entity_id?: string;
+    prob_given_true: number;
+    prob_given_false?: number;
+    to_state?: string; // platform=state
+    below?: number; // platform=numeric_state
+    above?: number; // platform=numeric_state
+    value_template?: string; // platform=template
+  }>;
 
-  constructor(private inputObj: any) {
-    if (this.isBinarySensorObj(inputObj)) this.binary_sensor = inputObj.binary_sensor;
-    else this.binary_sensor = inputObj;
-  }
-
-  private isBinarySensorObj(obj: any): boolean {
-    return !!obj && !!obj.binary_sensor && typeof(obj.binary_sensor) === 'object';
+  constructor(private inputObj: BayesianSensor) {
+    this.platform = inputObj.platform;
+    this.prior = inputObj.prior;
+    this.name = inputObj.name;
+    this.probability_threshold = inputObj.probability_threshold;
+    this.observations = inputObj.observations;
+    delete this.inputObj;
   }
 }
