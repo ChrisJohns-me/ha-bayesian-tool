@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ExampleYAML } from './constants/example-yaml';
 import YAML from 'yaml';
 import { BayesianSensor } from './classes/bayesian-sensor.class';
-import { IObservationMeta } from './interfaces/observation-meta.interface'
+import { ISensor } from './interfaces/sensor.interface'
 
 @Component({
   selector: 'my-app',
@@ -15,7 +15,7 @@ export class AppComponent {
   public showCode: boolean = false;
   public textInput: string = ExampleYAML;
   public bayesianSensor: BayesianSensor;
-  public observationMetas: IObservationMeta[] = [];
+  public simulatedSensors: ISensor[] = [];
   public calculatedProbability: number = 0;
   public get calculatedResult(): boolean {
     return !!this.bayesianSensor && this.calculatedProbability >= this.bayesianSensor.probability_threshold;
@@ -33,7 +33,7 @@ export class AppComponent {
     try {
       parsedInput = YAML.parse(this.textInput);
       this.bayesianSensor = new BayesianSensor(parsedInput.binary_sensor);
-      this.importMeta();
+      this.importSensors();
 
       this.updateBayesianSensor();
     } catch(error) {
@@ -46,13 +46,18 @@ export class AppComponent {
     this.textInput = YAML.stringify({ binary_sensor: this.bayesianSensor });
   }
 
-  private importMeta(): void {
-    this.bayesianSensor.observations.forEach((obs) => {
-      const observationMeta: IObservationMeta = {
-        observation: obs
-      };
-      this.observationMetas.push(observationMeta);
-    });
+  /**
+   * Creates simulated sensors based off of the observations list
+   */
+  private importSensors(): void {
+    this.bayesianSensor.observations
+      .filter(obs => !this.simulatedSensors.find(s => s.entity_id === obs.entity_id))
+      .forEach(obs => {
+        this.simulatedSensors.push({
+          entity_id: obs.entity_id,
+          state: false,
+        });
+      });
   }
 
   private updateBayesianSensor(): void {

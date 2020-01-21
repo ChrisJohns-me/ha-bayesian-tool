@@ -9,10 +9,10 @@ export interface IObservation {
   entity_id?: string;
   prob_given_true: number;
   prob_given_false?: number;
-  to_state?: string; // platform=state
-  below?: number; // platform=numeric_state
-  above?: number; // platform=numeric_state
-  value_template?: string; // platform=template
+  to_state?: string; // if platform=state
+  below?: number; // if platform=numeric_state
+  above?: number; // if platform=numeric_state
+  value_template?: string; // if platform=template
 }
 
 export class BayesianSensor {
