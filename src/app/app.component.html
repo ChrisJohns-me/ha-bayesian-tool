@@ -4,12 +4,18 @@
     Sensor name:
     <input [(ngModel)]="bayesianSensor.name" (keyup)="updateCode()" />
   </div>
-  <div>Prior: {{ bayesianSensor?.prior }}</div>
-  <div>Probability threshold: {{ bayesianSensor?.probability_threshold }}</div>
+  <div>
+    Prior:
+    <input [(ngModel)]="bayesianSensor.prior" (keyup)="updateCode();updateBayesianSensor()" />
+  </div>
+  <div>
+    Probability threshold:
+    <input [(ngModel)]="bayesianSensor.probability_threshold" (keyup)="updateCode();updateBayesianSensor()" />
+  </div>
 
   <br />
   <div><strong>Simulated Results</strong></div>
-  <div>Probability: {{ calculatedProbability }}</div>
+  <div>Probability: {{ calculatedProbability | number }}</div>
   <div>Result: {{ calculatedResult ? 'On' : 'Off' }}</div>
 
   <br />
