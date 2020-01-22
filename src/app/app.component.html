@@ -14,10 +14,19 @@
   </div>
 
   <br />
-  <div><strong>Simulated Results</strong></div>
-  <div>Probability: {{ calculatedProbability | number }}</div>
-  <div>Result: {{ calculatedResult ? 'On' : 'Off' }}</div>
-
+  <div><strong>Simulated Sensors</strong></div>
+  <table class="table-data">
+    <thead>
+      <td><strong>Entity Identifiers</strong></td>
+      <td><strong>State</strong></td>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sensor of simulatedSensors">
+        <td>{{ sensor.entity_id }}</td>
+        <td><input type="checkbox" [(ngModel)]="sensor.state" /></td>
+      </tr>
+    </tbody>
+  </table>
   <br />
   <div><strong>Simulated Results</strong></div>
   <div>Probability: {{ calculatedProbability | number }}</div>
@@ -25,17 +34,19 @@
 
   <br />
   <div><strong>Observations</strong></div>
-  <table class="observation-table">
+  <table class="table-data">
     <thead>
       <td><strong>Entity Identifiers</strong></td>
       <td><strong>Prob Given True</strong></td>
       <td><strong>Prob Given False</strong></td>
+      <td>Sim State</td>
     </thead>
     <tbody>
       <tr *ngFor="let obs of bayesianSensor?.observations">
         <td>{{ obs.entity_id }}</td>
         <td>{{ obs.prob_given_true }}</td>
         <td>{{ (obs.prob_given_false ? obs.prob_given_false : 1 - obs.prob_given_true) | number:'0.1-2' }}</td>
+        <td>{{ findSensor(obs.entity_id)?.state }}</td>
       </tr>
     </tbody>
   </table>

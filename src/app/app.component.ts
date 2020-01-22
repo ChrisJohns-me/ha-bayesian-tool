@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ExampleYAML } from './constants/example-yaml';
 import YAML from 'yaml';
-import { BayesianSensor } from './classes/bayesian-sensor.class';
+import { BayesianSensor, IObservation } from './classes/bayesian-sensor.class';
 import { ISensor } from './interfaces/sensor.interface'
 
 @Component({
@@ -44,6 +44,14 @@ export class AppComponent {
 
   public updateCode(): void {
     this.textInput = YAML.stringify({ binary_sensor: this.bayesianSensor });
+  }
+
+  public findObservations(entityId: string): IObservation[] {
+    return this.bayesianSensor.observations.filter(obs => obs.entity_id === entityId);
+  }
+
+  public findSensor(entityId: string): ISensor {
+    return this.simulatedSensors.find(s => s.entity_id === entityId);
   }
 
   /**
