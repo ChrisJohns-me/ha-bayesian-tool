@@ -63,20 +63,28 @@ export class AppComponent {
       .forEach(obs => {
         this.simulatedSensors.push({
           entity_id: obs.entity_id,
-          state: false,
+          state: 'off',
         });
       });
   }
 
+  /**
+   * Loosely based off of Home Assistant's Bayesian "async_added_to_hass" method
+   */
   private updateBayesianSensor(): void {
     if (!this.bayesianSensor) return;
     let prior = this.bayesianSensor.prior;
-    for (let obs of this.bayesianSensor.observations)
-      prior = this.updateProbability(prior, obs.prob_given_true, obs.prob_given_false);
+
+    this.bayesianSensor.observations
+      .filter(obs => !!this.simulatedSensors.find(s => s.entity_id === obs.entity_id && s.state === obs.to_state))
+      .forEach(obs => prior = this.updateProbability(prior, obs.prob_given_true, obs.prob_given_false));
 
     this.calculatedProbability = prior;
   }
 
+  /**
+   * Based off of Home Assistant's Bayesian "update_probability" method
+   */
   private updateProbability(prior: number, prob_true: number, prob_false: number = 1 - prob_true): number {
     const numerator = prob_true * prior
     const denominator = numerator + prob_false * (1 - prior)

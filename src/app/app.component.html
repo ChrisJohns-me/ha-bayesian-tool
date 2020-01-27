@@ -23,7 +23,7 @@
     <tbody>
       <tr *ngFor="let sensor of simulatedSensors">
         <td>{{ sensor.entity_id }}</td>
-        <td><input type="checkbox" [(ngModel)]="sensor.state" /></td>
+        <td><input type="text" [(ngModel)]="sensor.state" (keyup)="updateBayesianSensor()" /></td>
       </tr>
     </tbody>
   </table>
