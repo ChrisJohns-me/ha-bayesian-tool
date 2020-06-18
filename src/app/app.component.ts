@@ -29,12 +29,12 @@ export class AppComponent {
   public importInput(): void {
     let parsedInput: any;
     this.hasImportError = false;
+    this.simulatedSensors = [];
 
     try {
       parsedInput = YAML.parse(this.textInput);
       this.bayesianSensor = new BayesianSensor(parsedInput.binary_sensor);
       this.importSensors();
-
       this.updateBayesianSensor();
     } catch(error) {
       this.hasImportError = true;
