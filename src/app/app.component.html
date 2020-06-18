@@ -1,1 +1,67 @@
-<textarea class="main-input"></textarea>
+<section>
+  <div><strong>Binary Sensor</strong></div>
+  <div>
+    Sensor name:
+    <input [(ngModel)]="bayesianSensor.name" (keyup)="updateCode()" />
+  </div>
+  <div>
+    Prior:
+    <input [(ngModel)]="bayesianSensor.prior" (keyup)="updateCode();updateBayesianSensor()" />
+  </div>
+  <div>
+    Probability threshold:
+    <input [(ngModel)]="bayesianSensor.probability_threshold" (keyup)="updateCode();updateBayesianSensor()" />
+  </div>
+
+  <br />
+  <div><strong>Simulated Sensors</strong></div>
+  <table class="table-data">
+    <thead>
+      <td><strong>Entity Identifiers</strong></td>
+      <td><strong>State</strong></td>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sensor of simulatedSensors">
+        <td>{{ sensor.entity_id }}</td>
+        <td><input type="text" [(ngModel)]="sensor.state" (keyup)="updateBayesianSensor()" /></td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <div><strong>Simulated Results</strong></div>
+  <div>Probability: {{ calculatedProbability | number }}</div>
+  <div>Result: {{ calculatedResult ? 'On' : 'Off' }}</div>
+
+  <br />
+  <div><strong>Observations</strong></div>
+  <table class="table-data">
+    <thead>
+      <td><strong>Entity Identifiers</strong></td>
+      <td><strong>Prob Given True</strong></td>
+      <td><strong>Prob Given False</strong></td>
+      <td>Sim State</td>
+    </thead>
+    <tbody>
+      <tr *ngFor="let obs of bayesianSensor?.observations">
+        <td>{{ obs.entity_id }}</td>
+        <td>{{ obs.prob_given_true }}</td>
+        <td>{{ (obs.prob_given_false ? obs.prob_given_false : 1 - obs.prob_given_true) | number:'0.1-2' }}</td>
+        <td>{{ findSensor(obs.entity_id)?.state }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <div *ngIf="hasImportError">
+    <span>{{ importError }}</span>
+  </div>
+
+  <button (click)="showCode = !showCode">
+    {{ showCode ? 'Hide Code' : 'Show Code' }}
+  </button>
+  <ng-container *ngIf="showCode">
+    <button (click)="importInput()">Import from code</button><br />
+    <textarea class="main-input" [(ngModel)]="textInput"></textarea>
+  </ng-container>
+</section>
